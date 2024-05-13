@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#faf7f5",
     alignItems: "center",
-    // justifyContent: "center",
+    justifyContent: "center",
     paddingTop: 80,
   },
   topContainer: {
