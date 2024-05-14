@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from "@react-navigation/native";
 
 import { StatusBar } from "expo-status-bar";
 // import { StyleSheet, Text, View } from "react-native";
@@ -8,11 +8,12 @@ import LandingScreen from "./src/screens/LandingScreen";
 import LoginScreen from "./src/screens/LoginScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 import { NativeWindStyleSheet } from "nativewind";
+import HomeScreen from "./src/screens/Home/Home";
+import HomeTabs from "./src/screens/HomeTab";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
   /** Ini function untuk check apakah sudah login apa belum */
 
   // const [isSignedIn, setIsSignedIn] = useState(false)
@@ -37,12 +38,12 @@ export default function App() {
 
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="LandingPage"
           component={LandingScreen}
           options={({ route }) => ({
             title: "Landing",
-            headerShown: false
+            headerShown: false,
           })}
         />
         <Stack.Screen
@@ -50,7 +51,7 @@ export default function App() {
           component={LoginScreen}
           options={({ route }) => ({
             title: "Landing",
-            headerShown: false
+            headerShown: false,
           })}
         />
         <Stack.Screen
@@ -58,14 +59,12 @@ export default function App() {
           component={RegisterScreen}
           options={({ route }) => ({
             title: "Landing",
-            headerShown: false
+            headerShown: false,
           })}
-        />
-
+        /> */}
+        <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
       </Stack.Navigator>
-
     </NavigationContainer>
-
 
     // {/* <StatusBar style="auto" /> */ }
     // {/* </View> */ }
