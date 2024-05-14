@@ -11,7 +11,9 @@ import { NativeWindStyleSheet } from "nativewind";
 import HomeScreen from "./src/screens/Home/Home";
 import HomeTabs from "./src/screens/HomeTab";
 import InvoiceResponse from "./src/screens/Home/InvoiceResponse";
+import MidtransWebView from "./src/screens/Home/MidtransWebview";
 import RestaurantDetails from "./src/screens/Restaurants/RestaurantDetails";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -65,8 +67,9 @@ export default function App() {
           })}
         /> */}
         <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} /> */}
-        <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
+        {/* <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
+         <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
+        <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} /> */}
       </Stack.Navigator>
     </NavigationContainer>
 
