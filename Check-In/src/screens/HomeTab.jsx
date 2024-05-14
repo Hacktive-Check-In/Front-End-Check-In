@@ -29,68 +29,38 @@ function HomeTabs() {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }) => (
-            <Foundation
-              name="home"
-              size={24}
-              color={focused ? "white" : "grey"}
-            />
-          ),
+          tabBarIcon: ({ color, size, focused }) => <Foundation name="home" size={24} color={focused ? "white" : "grey"} />,
         }}
       />
       <Tab.Screen
         name="Favorite"
         component={FavoriteScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }) => (
-            <MaterialIcons
-              name="favorite"
-              size={24}
-              color={focused ? "white" : "grey"}
-            />
-          ),
+          tabBarIcon: ({ color, size, focused }) => <MaterialIcons name="favorite" size={24} color={focused ? "white" : "grey"} />,
         }}
       />
       <Tab.Screen
         name="Invoice List"
         component={InvoiceScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }) => (
-            <FontAwesome
-              name="list"
-              size={24}
-              color={focused ? "white" : "grey"}
-            />
-          ),
+          tabBarIcon: ({ color, size, focused }) => <FontAwesome name="list" size={24} color={focused ? "white" : "grey"} />,
         }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({ color, size, focused }) => (
-            <FontAwesome
-              name="user-circle"
-              size={24}
-              color={focused ? "white" : "grey"}
-            />
-          ),
+          tabBarIcon: ({ color, size, focused }) => <FontAwesome name="user-circle" size={24} color={focused ? "white" : "grey"} />,
         }}
       />
       {/* Testing Tab... Nanti dihapus aja Hapus Start */}
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Restaurant Details"
         component={RestaurantDetails}
         options={{
-          tabBarIcon: ({ color, size, focused }) => (
-            <FontAwesome
-              name="user-circle"
-              size={24}
-              color={focused ? "white" : "grey"}
-            />
-          ),
+          tabBarIcon: ({ color, size, focused }) => <FontAwesome name="user-circle" size={24} color={focused ? "white" : "grey"} />,
         }}
-      />
+      /> */}
       {/* Testing Tab... Hapus End */}
     </Tab.Navigator>
   );
