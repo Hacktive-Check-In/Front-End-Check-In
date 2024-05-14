@@ -27,3 +27,7 @@ export function formatCurrency(number) {
     maximumFractionDigits: 2,
   }).format(number);
 }
+
+export function calculateTotalSubTotal(transactionDetails) {
+  return formatCurrency(transactionDetails.reduce((total, transaction) => total + transaction.subTotal, 0));
+}
