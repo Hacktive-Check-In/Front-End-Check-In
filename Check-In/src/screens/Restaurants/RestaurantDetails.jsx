@@ -18,7 +18,7 @@ export default function RestaurantDetails({ navigation }) {
               <Image
                 className="h-full w-full rounded-2xl"
                 source={{
-                  uri: "https://reactnative.dev/img/tiny_logo.png",
+                  uri: "https://loremflickr.com/400/400/restaurant",
                 }}
               />
             </View>
