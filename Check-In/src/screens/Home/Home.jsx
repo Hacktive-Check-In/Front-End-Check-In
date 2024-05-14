@@ -84,7 +84,7 @@ const HomeScreen = () => {
         data={Test}
         renderItem={renderProfileItem}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ alignItems: "center", paddingBottom: 80 }}
+        contentContainerStyle={{ alignItems: "center", paddingBottom: 300 }}
       />
     </View>
   );
