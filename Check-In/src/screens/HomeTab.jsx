@@ -15,7 +15,7 @@ function HomeTabs() {
         tabBarShowLabel: false,
         tabBarStyle: {
           marginHorizontal: 20,
-          marginBottom: 20,
+          marginVertical: 5,
           borderRadius: 40,
           backgroundColor: "black",
           height: 70,
