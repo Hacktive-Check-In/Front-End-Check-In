@@ -13,12 +13,10 @@ function HomeTabs() {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: {
-          position: "absolute",
+          marginHorizontal: 20,
+          marginBottom: 20,
           borderRadius: 40,
-          bottom: 20,
           backgroundColor: "black",
-          left: 20,
-          right: 20,
           height: 70,
           paddingHorizontal: 5,
         },
