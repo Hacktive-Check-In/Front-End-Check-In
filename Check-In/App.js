@@ -64,9 +64,9 @@ export default function App() {
             headerShown: false,
           })}
         /> */}
-        {/* <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} /> */}
-        <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
-        <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} />
+        <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
+        <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} /> */}
       </Stack.Navigator>
     </NavigationContainer>
 
