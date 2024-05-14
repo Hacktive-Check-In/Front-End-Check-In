@@ -10,6 +10,7 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import { NativeWindStyleSheet } from "nativewind";
 import HomeScreen from "./src/screens/Home/Home";
 import HomeTabs from "./src/screens/HomeTab";
+import InvoiceResponse from "./src/screens/Home/InvoiceResponse";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,7 +63,8 @@ export default function App() {
             headerShown: false,
           })}
         /> */}
-        <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
 
