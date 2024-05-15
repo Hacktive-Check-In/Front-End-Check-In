@@ -10,15 +10,18 @@ const Test = [
     location: "Jakarta, Indonesia",
     description: "KFC Jakarta bietet eine umfassende Speisekarte.",
     rating: 4.5,
-    imgUrl: "https://klasika.kompas.id/wp-content/uploads/2017/07/2707-Klasiloka-KFC_FEAT.jpg",
+    imgUrl:
+      "https://klasika.kompas.id/wp-content/uploads/2017/07/2707-Klasiloka-KFC_FEAT.jpg",
   },
   {
     id: 2,
     name: "Pizza Hut Bekasi",
     location: "Bekasi, Indonesia",
-    description: "Pizza Hut provides excellent service, when you come here you will be satisfied",
+    description:
+      "Pizza Hut provides excellent service, when you come here you will be satisfied",
     rating: 4.2,
-    imgUrl: "https://images.bisnis.com/posts/2023/01/03/1614712/pzza-sarimelati-1.jpg",
+    imgUrl:
+      "https://images.bisnis.com/posts/2023/01/03/1614712/pzza-sarimelati-1.jpg",
   },
   {
     id: 3,
@@ -34,25 +37,32 @@ const Test = [
     location: "Bandung, Indonesia",
     description: "Wenn Sie hierher kommen, erhalten Sie viele Rabatte.",
     rating: 4.1,
-    imgUrl: "https://images.bisnis.com/posts/2020/11/03/1313185/burger-king.jpg",
+    imgUrl:
+      "https://images.bisnis.com/posts/2020/11/03/1313185/burger-king.jpg",
   },
   {
     id: 5,
     name: "Starbucks Jakarta",
     location: "Jakarta, Indonesia",
-    description: "Jetzt sind die Preise bei Starbucks günstiger, es ist sicher, Kaffee zu genießen.",
+    description:
+      "Jetzt sind die Preise bei Starbucks günstiger, es ist sicher, Kaffee zu genießen.",
     rating: 4.4,
-    imgUrl: "https://asumsi.co/wp-content/uploads/1644398291857_starbucksge35acbd7b1920.jpg",
+    imgUrl:
+      "https://asumsi.co/wp-content/uploads/1644398291857_starbucksge35acbd7b1920.jpg",
   },
 ];
 
 const renderProfileItem = ({ item }) => (
-  <View className="w-4/5 bg-white h-44 flex-row rounded-xl justify-start mb-4">
-    <Image source={{ uri: item.imgUrl }} style={{ width: "40%", height: "100%" }} className="rounded-l-xl" />
-    <View className="pl-5 pt-5">
+  <View className="w-full  h-44 flex-row rounded-xl my-2">
+    <Image
+      source={{ uri: item.imgUrl }}
+      style={{ width: "40%", height: "100%" }}
+      className="rounded-l-xl"
+    />
+    <View className="p-5 w-3/5 bg-white rounded-r-xl">
       <Text className="text-lg w-full">{item.name}</Text>
       <Text className="pt-2 text-sm">{item.location}</Text>
-      <View className="flex-row justify-end pt-8 w-52 pr-3">
+      <View className="flex-row justify-end pt-8">
         <View className="bg-green-300 w-14 aspect-square rounded-full mr-2 flex items-center justify-center">
           <FontAwesome6 name="heart" size={24} color="white" />
         </View>
@@ -68,18 +78,24 @@ const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");
 
   return (
-    <View className="flex-col items-center pt-7">
-      <Image source={require("../../../public/banner.png")} className="w-4/5 h-40 rounded-2xl mb-5" />
-      <View className="w-4/5 bg-white flex-row rounded-xl justify-center items-center">
-        <Fontisto name="search" size={20} color="black" />
+    <View className="flex-col items-center py-7 px-5 w-full">
+      <Image
+        source={require("../../../public/banner.png")}
+        className="w-full h-40 rounded-2xl mb-5"
+      />
+
+      <View className="bg-white flex-row rounded-xl justify-center items-center w-full">
+        <Fontisto name="search" size={22} color="black" />
         <TextInput
           placeholder="Search..."
           value={searchText}
           onChangeText={(text) => setSearchText(text)}
-          className="bg-white text-left w-4/5 rounded-xl px-2 py-2"
+          className="bg-white text-left w-[90%] rounded-xl p-2.5"
         />
       </View>
-      <Text className="my-5 text-left w-5/6 pl-2 text-xl font-semibold">Our Restaurant</Text>
+      <Text className="mt-5 mb-2 text-left w-full pl-3 text-xl font-semibold">
+        Our Restaurants
+      </Text>
       <FlatList
         data={Test}
         renderItem={renderProfileItem}
