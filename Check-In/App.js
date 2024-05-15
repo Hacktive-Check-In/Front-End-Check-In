@@ -67,12 +67,12 @@ export default function App() {
             headerShown: false,
           })}
         /> */}
-        {/* <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
         <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
         <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
-        <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} />
         {/* <Stack.Screen name="Invoice Details" component={InvoiceDetailScreen} options={{ headerShown: true }} /> */}
-        <Stack.Screen name="Item Details" component={ItemScreen} options={{ headerShown: true }} />
+        {/* <Stack.Screen name="Item Details" component={ItemScreen} options={{ headerShown: true }} /> */}
       </Stack.Navigator>
     </NavigationContainer>
 
