@@ -14,6 +14,7 @@ import InvoiceResponse from "./src/screens/Home/InvoiceResponse";
 import MidtransWebView from "./src/screens/Home/MidtransWebview";
 import RestaurantDetails from "./src/screens/Restaurants/RestaurantDetails";
 import InvoiceDetailScreen from "./src/screens/Invoice Detail/InvoiceDetail";
+import ItemScreen from "./src/screens/Restaurants/ItemDetails";
 
 const Stack = createNativeStackNavigator();
 
@@ -70,7 +71,8 @@ export default function App() {
         <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
         <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
         <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} /> */}
-        <Stack.Screen name="Invoice Details" component={InvoiceDetailScreen} options={{ headerShown: true }} />
+        {/* <Stack.Screen name="Invoice Details" component={InvoiceDetailScreen} options={{ headerShown: true }} /> */}
+        <Stack.Screen name="Item Details" component={ItemScreen} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
 
