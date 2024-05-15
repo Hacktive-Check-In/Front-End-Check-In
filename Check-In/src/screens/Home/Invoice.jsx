@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Text, View, Image, FlatList } from "react-native";
-import { formatCurrency, formatDate, formatTime } from "../../../helpers/helper";
+import { Text, View, Image, FlatList, ScrollView } from "react-native";
+import {
+  formatCurrency,
+  formatDate,
+  formatTime,
+} from "../../../helpers/helper";
 
 const dummy = [
   {
@@ -17,23 +21,52 @@ const dummy = [
       location: "Jakarta, Indonesia",
       description: "KFC Jakarta bietet eine umfassende Speisekarte.",
       rating: 4.5,
-      imgUrl: "https://klasika.kompas.id/wp-content/uploads/2017/07/2707-Klasiloka-KFC_FEAT.jpg",
+      imgUrl:
+        "https://klasika.kompas.id/wp-content/uploads/2017/07/2707-Klasiloka-KFC_FEAT.jpg",
     },
   },
 ];
 
+// Ini file untuk conditional kalau tidak ada items
+{
+  /* <View className="flex align-middle items-center justify-center">
+<Text className="text-center font-bold text-2xl">
+  Consider Buying Something?
+</Text>
+</View> */
+}
+
 const renderInvoiceCard = ({ item }) => (
-  <View className="min-w-max bg-white h-44 flex-row rounded-xl justify-start mt-4">
-    <Image source={{ uri: item.Restaurant.imgUrl }} style={{ width: "40%", height: "100%" }} className="rounded-l-xl" />
-    <View className="px-5 py-2 ">
-      <Text className="text-lg font-semibold">{item.Restaurant.name}</Text>
-      <Text className="pt-2 text-sm">{item.Restaurant.location}</Text>
-      <Text className="pt-2 text-sm">Reservation Date: </Text>
-      <Text className="pt-0.5 text-sm">{formatDate(item.reservationDate)}</Text>
-      <Text className="pt-0.5 text-sm">{formatTime(item.reservationDate)}</Text>
-      <Text className="pt-2 text-sm">Total Price : {formatCurrency(item.totalPrice)}</Text>
+  <ScrollView className="p-5">
+    <View>
+      <Text className="text-center font-bold text-xl">
+        Check Invoice Histories
+      </Text>
     </View>
-  </View>
+    <View className="bg-white w-full h-44 flex-row rounded-xl mt-4 justify-center shadow-2xl">
+      <View className="w-2/5 h-full">
+        <Image
+          source={{ uri: item.Restaurant.imgUrl }}
+          style={{ width: "full", height: "100%" }}
+          className="rounded-l-xl"
+        />
+      </View>
+      <View className="px-5 py-2 w-3/5 border-l-2 border-gray-100">
+        <Text className="text-lg font-semibold">{item.Restaurant.name}</Text>
+        <Text className="pt-2 text-sm">{item.Restaurant.location}</Text>
+        <Text className="pt-2 text-sm">Reservation Date: </Text>
+        <Text className="pt-0.5 text-sm">
+          {formatDate(item.reservationDate)}
+        </Text>
+        <Text className="pt-0.5 text-sm">
+          {formatTime(item.reservationDate)}
+        </Text>
+        <Text className="pt-2 text-sm">
+          Total Price : {formatCurrency(item.totalPrice)}
+        </Text>
+      </View>
+    </View>
+  </ScrollView>
 );
 
 const InvoiceScreen = () => {
@@ -43,7 +76,7 @@ const InvoiceScreen = () => {
         data={dummy}
         renderItem={renderInvoiceCard}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ alignItems: "center", paddingBottom: 300 }}
+        contentContainerStyle={{ paddingBottom: 260 }}
       />
     </View>
   );
