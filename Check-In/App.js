@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-
 import { StatusBar } from "expo-status-bar";
 // import { StyleSheet, Text, View } from "react-native";
 import { Text, View } from "react-native";
@@ -15,6 +14,8 @@ import MidtransWebView from "./src/screens/Home/MidtransWebview";
 import RestaurantDetails from "./src/screens/Restaurants/RestaurantDetails";
 import InvoiceDetailScreen from "./src/screens/Invoice Detail/InvoiceDetail";
 import ItemScreen from "./src/screens/Restaurants/ItemDetails";
+import { PaperProvider } from "react-native-paper";
+import { PaperDateProvider } from "react-native-paper-dates";
 
 const Stack = createNativeStackNavigator();
 
@@ -40,41 +41,42 @@ export default function App() {
   return (
     // <View style={styles.container}>
     // <View className="flex-1 justify-center items-center bg-white">
-
-    <NavigationContainer>
-      <Stack.Navigator>
-        {/* <Stack.Screen
-          name="LandingPage"
-          component={LandingScreen}
-          options={({ route }) => ({
-            title: "Landing",
-            headerShown: false,
-          })}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={({ route }) => ({
-            title: "Landing",
-            headerShown: false,
-          })}
-        />
-        <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={({ route }) => ({
-            title: "Landing",
-            headerShown: false,
-          })}
-        /> */}
-        <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
-        <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
-        <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="Invoice Details" component={InvoiceDetailScreen} options={{ headerShown: true }} /> */}
-        {/* <Stack.Screen name="Item Details" component={ItemScreen} options={{ headerShown: true }} /> */}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {/* <Stack.Screen
+              name="LandingPage"
+              component={LandingScreen}
+              options={({ route }) => ({
+                title: "Landing",
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={({ route }) => ({
+                title: "Landing",
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={({ route }) => ({
+                title: "Landing",
+                headerShown: false,
+              })}
+            />
+            <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
+            <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
+            <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
+            <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} />
+            <Stack.Screen name="Invoice Details" component={InvoiceDetailScreen} options={{ headerShown: true }} /> */}
+          <Stack.Screen name="Item Details" component={ItemScreen} options={{ headerShown: true }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
 
     // {/* <StatusBar style="auto" /> */ }
     // {/* </View> */ }
