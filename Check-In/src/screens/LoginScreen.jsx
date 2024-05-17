@@ -18,7 +18,6 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
 
   const auth = useContext(AuthContext);
-  console.log(auth);
 
   const handleLogin = async () => {
     try {
@@ -44,7 +43,6 @@ export default function LoginScreen({ navigation }) {
       );
       await SecureStore.setItemAsync("email", email);
       auth.setIsSignedIn(true);
-      navigation.navigate("Home");
     } catch (error) {
       console.log(error);
       if (error === `incomplete field`) {
