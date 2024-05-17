@@ -23,6 +23,8 @@ export default function RegisterScreen({ navigation }) {
         throw `incomplete field`;
       }
 
+      console.log(phoneNumber);
+
       phoneNumber.split("").map((phone) => {
         if (
           phone != 0 ||
