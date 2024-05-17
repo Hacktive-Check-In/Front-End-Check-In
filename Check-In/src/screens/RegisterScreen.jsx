@@ -9,17 +9,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import * as SecureStore from "expo-secure-store";
 import axios from "axios";
-import AuthContext from "../../context/auth";
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
-  const auth = useContext(AuthContext);
 
   const handleRegister = async () => {
     try {

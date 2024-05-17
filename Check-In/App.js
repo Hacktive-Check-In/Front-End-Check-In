@@ -16,25 +16,29 @@ import InvoiceDetailScreen from "./src/screens/Invoice Detail/InvoiceDetail";
 import ItemScreen from "./src/screens/Restaurants/ItemDetails";
 import { PaperProvider } from "react-native-paper";
 import { PaperDateProvider } from "react-native-paper-dates";
+import { useEffect, useState } from "react";
+import AuthContext from "./context/auth";
 
 const Stack = createNativeStackNavigator();
+import * as SecureStore from "expo-secure-store";
+
 
 export default function App() {
   /** Ini function untuk check apakah sudah login apa belum */
 
-  // const [isSignedIn, setIsSignedIn] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
 
-  // useEffect(() => {
-  //   SecureStore.getItemAsync("access_token")
-  //     .then(result => {
-  //       if (result) {
-  //         setIsSignedIn(true)
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     })
-  // }, [])
+  useEffect(() => {
+    SecureStore.getItemAsync("access_token")
+      .then(result => {
+        if (result) {
+          setIsSignedIn(true)
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }, [])
 
   /** End of check function*/
 
@@ -42,40 +46,50 @@ export default function App() {
     // <View style={styles.container}>
     // <View className="flex-1 justify-center items-center bg-white">
     <PaperProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="LandingPage"
-            component={LandingScreen}
-            options={({ route }) => ({
-              title: "Landing",
-              headerShown: false,
-            })}
-          />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={({ route }) => ({
-              title: "Landing",
-              headerShown: false,
-            })}
-          />
-          <Stack.Screen
-            name="Register"
-            component={RegisterScreen}
-            options={({ route }) => ({
-              title: "Landing",
-              headerShown: false,
-            })}
-          />
-          {/* <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
-            <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
-            <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
-            <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} />
-            <Stack.Screen name="Invoice Details" component={InvoiceDetailScreen} options={{ headerShown: true }} /> */}
-          <Stack.Screen name="Item Details" component={ItemScreen} options={{ headerShown: true }} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <AuthContext.Provider value={{ isSignedIn, setIsSignedIn }}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {!isSignedIn ?
+              <>
+                <Stack.Screen
+                  name="LandingPage"
+                  component={LandingScreen}
+                  options={({ route }) => ({
+                    title: "Landing",
+                    headerShown: false,
+                  })}
+                />
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={({ route }) => ({
+                    title: "Landing",
+                    headerShown: false,
+                  })}
+                />
+                <Stack.Screen
+                  name="Register"
+                  component={RegisterScreen}
+                  options={({ route }) => ({
+                    title: "Landing",
+                    headerShown: false,
+                  })}
+                />
+              </>
+              :
+
+              <>
+                <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
+                <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
+                <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
+                <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} />
+                <Stack.Screen name="Invoice Details" component={InvoiceDetailScreen} options={{ headerShown: true }} />
+                <Stack.Screen name="Item Details" component={ItemScreen} options={{ headerShown: true }} />
+
+              </>}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
     </PaperProvider>
 
     // {/* <StatusBar style="auto" /> */ }

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
+  Alert,
   Image,
   Pressable,
   StyleSheet,
@@ -8,10 +9,54 @@ import {
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
+import AuthContext from "../../context/auth";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const auth = useContext(AuthContext);
+  console.log(auth);
+
+  const handleLogin = async () => {
+    try {
+      if (!email || !password) {
+        throw `incomplete field`;
+      }
+
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_BASE_URL}` + `/login`,
+        {
+          email: email,
+          password: password,
+        }
+      );
+
+      if (!response.data.access_token) {
+        throw `no token`;
+      }
+
+      await SecureStore.setItemAsync(
+        "access_token",
+        response.data.access_token
+      );
+      await SecureStore.setItemAsync("email", email);
+      auth.setIsSignedIn(true);
+      navigation.navigate("Home");
+    } catch (error) {
+      console.log(error);
+      if (error === `incomplete field`) {
+        return Alert.alert("Incomplete Fields!", "All fields must be filled!");
+      } else if (error === `no token`) {
+        return Alert.alert("Not Authorized!", "Email / Password is not valid");
+      } else {
+        Alert.alert("Login Failed", "An error occurred while Logging in.");
+      }
+    }
+  };
+
   return (
     <>
       <SafeAreaProvider>
@@ -49,7 +94,7 @@ export default function LoginScreen({ navigation }) {
             />
           </View>
           <View style={styles.bottomContainer}>
-            <Pressable style={styles.signInBtnContainer}>
+            <Pressable style={styles.signInBtnContainer} onPress={handleLogin}>
               <Text style={styles.signInBtnText}>Sign In</Text>
             </Pressable>
             <View style={styles.signUpContainer}>
