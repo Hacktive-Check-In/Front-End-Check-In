@@ -1,6 +1,11 @@
 import { Image, Pressable, Text, View } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { useContext } from "react";
+import AuthContext from "../../../context/auth";
 
 const ProfileScreen = () => {
+  const auth = useContext(AuthContext);
+
   return (
     <View className="flex-1 items-center justify- h-full w-full">
       <View className="h-full w-full justify-center items-center">
@@ -37,7 +42,14 @@ const ProfileScreen = () => {
             </View>
 
             <View className="w-full justify-center align-middle text-center">
-              <Pressable className="mx-24 mt-0.5">
+              <Pressable
+                className="mx-24 mt-0.5"
+                onPress={async () => {
+                  await SecureStore.deleteItemAsync("access_token");
+                  await SecureStore.deleteItemAsync("email");
+                  auth.setIsSignedIn(false);
+                }}
+              >
                 <Text className="text-center bg-[#78c4a4] text-xl rounded-full py-3">
                   Log Out
                 </Text>
