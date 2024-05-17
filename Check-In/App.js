@@ -44,31 +44,31 @@ export default function App() {
     <PaperProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          {/* <Stack.Screen
-              name="LandingPage"
-              component={LandingScreen}
-              options={({ route }) => ({
-                title: "Landing",
-                headerShown: false,
-              })}
-            />
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={({ route }) => ({
-                title: "Landing",
-                headerShown: false,
-              })}
-            />
-            <Stack.Screen
-              name="Register"
-              component={RegisterScreen}
-              options={({ route }) => ({
-                title: "Landing",
-                headerShown: false,
-              })}
-            />
-            <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="LandingPage"
+            component={LandingScreen}
+            options={({ route }) => ({
+              title: "Landing",
+              headerShown: false,
+            })}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={({ route }) => ({
+              title: "Landing",
+              headerShown: false,
+            })}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={({ route }) => ({
+              title: "Landing",
+              headerShown: false,
+            })}
+          />
+          {/* <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
             <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
             <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
             <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} />
