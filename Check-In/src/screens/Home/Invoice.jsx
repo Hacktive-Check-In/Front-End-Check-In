@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, Image, FlatList, ScrollView } from "react-native";
 import {
   formatCurrency,
   formatDate,
   formatTime,
 } from "../../../helpers/helper";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 const dummy = [
   {
@@ -70,14 +72,47 @@ const renderInvoiceCard = ({ item }) => (
 );
 
 const InvoiceScreen = () => {
+  const [invoices, setInvoices] = useState([]);
+
+  const getInvoices = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_BASE_URL}` + `/transaction`,
+        {
+          headers: {
+            Authorization: `Bearer ${await SecureStore.getItemAsync(
+              "access_token"
+            )}`,
+          },
+        }
+      );
+      setInvoices(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getInvoices();
+  }, []);
+
   return (
     <View className=" flex flex-col items-center w-full h-full">
-      <FlatList
-        data={dummy}
-        renderItem={renderInvoiceCard}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: 260 }}
-      />
+      {invoices[0] ? (
+        <FlatList
+          data={invoices}
+          renderItem={renderInvoiceCard}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={{ paddingBottom: 260 }}
+        />
+      ) : (
+        <View className="flex items-center justify-center h-full">
+          <Text className="font-semibold text-xl">No invoices found!</Text>
+          <Text className="font-semibold text-xl">
+            Start ordering with us Today!
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

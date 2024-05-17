@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, Image, TextInput, FlatList } from "react-native";
 import { Fontisto } from "@expo/vector-icons";
 import { FontAwesome6, SimpleLineIcons } from "@expo/vector-icons";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 const Test = [
   {
@@ -76,6 +78,29 @@ const renderProfileItem = ({ item }) => (
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");
+  const [restaurants, setRestaurants] = useState([]);
+
+  const getRestaurants = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_BASE_URL}` + `/restaurants`,
+        {
+          headers: {
+            Authorization: `Bearer ${await SecureStore.getItemAsync(
+              "access_token"
+            )}`,
+          },
+        }
+      );
+      setRestaurants(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getRestaurants();
+  }, []);
 
   return (
     <View className="flex-col items-center py-7 px-5 w-full">
@@ -97,7 +122,8 @@ const HomeScreen = () => {
         Our Restaurants
       </Text>
       <FlatList
-        data={Test}
+        data={restaurants}
+        key={restaurants.id}
         renderItem={renderProfileItem}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ alignItems: "center", paddingBottom: 260 }}
