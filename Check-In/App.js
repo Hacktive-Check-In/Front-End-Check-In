@@ -63,7 +63,7 @@ export default function App() {
                   name="Login"
                   component={LoginScreen}
                   options={({ route }) => ({
-                    title: "Landing",
+                    title: "Login",
                     headerShown: false,
                   })}
                 />
@@ -71,7 +71,7 @@ export default function App() {
                   name="Register"
                   component={RegisterScreen}
                   options={({ route }) => ({
-                    title: "Landing",
+                    title: "Register",
                     headerShown: false,
                   })}
                 />
@@ -79,12 +79,27 @@ export default function App() {
               :
 
               <>
-                <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
-                <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{ headerShown: false }} />
-                <Stack.Screen name="Restaurant Details" component={RestaurantDetails} options={{ headerShown: true }} />
+                <Stack.Screen name="HomeTabs" component={HomeTabs} options={{
+                  title: "Home",
+                  headerShown: false
+                }} />
+                <Stack.Screen name="InvoiceResponse" component={InvoiceResponse} options={{
+                  title: "Invoice Response",
+                  headerShown: false
+                }} />
+                <Stack.Screen name="RestaurantDetails" component={RestaurantDetails} options={{
+                  title: "Restaurant Details",
+                  headerShown: true
+                }} />
                 <Stack.Screen name="Midtrans" component={MidtransWebView} options={{ headerShown: false }} />
-                <Stack.Screen name="Invoice Details" component={InvoiceDetailScreen} options={{ headerShown: true }} />
-                <Stack.Screen name="Item Details" component={ItemScreen} options={{ headerShown: true }} />
+                <Stack.Screen name="InvoiceDetails" component={InvoiceDetailScreen} options={{
+                  title: "Invoice Details",
+                  headerShown: true
+                }} />
+                <Stack.Screen name="ItemDetails" component={ItemScreen} options={{
+                  title: "Item Details",
+                  headerShown: true
+                }} />
 
               </>}
           </Stack.Navigator>
