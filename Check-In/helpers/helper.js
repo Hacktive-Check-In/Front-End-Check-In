@@ -31,3 +31,21 @@ export function formatCurrency(number) {
 export function calculateTotalSubTotal(transactionDetails) {
   return formatCurrency(transactionDetails.reduce((total, transaction) => total + transaction.subTotal, 0));
 }
+
+export function updateDateWithNewTime(originalDate, newTime) {
+  // Split the new time into hours and minutes
+  let [newHours, newMinutes] = newTime.split(":").map(Number);
+  console.log(newHours, newMinutes);
+
+  // Create a new Date object from the original date
+  let dateObj = new Date(originalDate);
+
+  // Set the hours and minutes of the new time
+  dateObj.setUTCHours(newHours);
+  dateObj.setUTCMinutes(newMinutes);
+  dateObj.setUTCSeconds(0);
+  dateObj.setUTCMilliseconds(0);
+
+  // Convert the Date object back to the ISO string
+  return dateObj.toISOString();
+}

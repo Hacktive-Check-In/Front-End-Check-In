@@ -1,124 +1,81 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Text, View, Image, FlatList, StyleSheet } from "react-native";
-import { formatCurrency } from "../../../helpers/helper";
+import { Text, View, Image, FlatList, StyleSheet, Pressable } from "react-native";
+import { formatCurrency, updateDateWithNewTime } from "../../../helpers/helper";
 import Counter from "react-native-counters";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import {
-  DatePickerModal,
-  TimePickerModal,
-  en,
-  registerTranslation,
-} from "react-native-paper-dates";
+import { DatePickerModal, TimePickerModal, en, registerTranslation } from "react-native-paper-dates";
 import { Button } from "react-native-paper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 registerTranslation("en", en);
 
-const Test = [
-  {
-    id: 1,
-    RestaurantId: 1,
-    name: "MIE GORENG",
-    description: "Fried Egg Noodles, Prawn, Beef Ball,Chicken Sate",
-    price: 125000,
-    imgUrl:
-      "https://asset.kompas.com/crops/032NyNKaO9X61kL1ZpU9AS4khrU=/52x28:954x629/750x500/data/photo/2020/11/19/5fb641f087a66.jpg",
-  },
-  {
-    id: 2,
-    RestaurantId: 1,
-    name: "KING PRAWNS",
-    description: "Spicy Sour Keung Sauce, Lingueine,Roasted Cherry Tomatoes",
-    price: 398000,
-    imgUrl:
-      "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/prawns-88d2952.jpg",
-  },
-  {
-    id: 3,
-    RestaurantId: 1,
-    name: "ASAM PADEH BOWL",
-    description:
-      "Prawns,Scallops,Garouper, Baby Octopus,Tamarind Chili Lime Leaf",
-    price: 198000,
-    imgUrl:
-      "https://img-global.cpcdn.com/recipes/0cb7219daddbeeda/680x482cq70/asam-padeh-gajeboh-foto-resep-utama.jpg",
-  },
-  {
-    id: 4,
-    RestaurantId: 1,
-    name: "CHARRED AUSTRALIAN WAGYU TENDERLOIN",
-    description:
-      "Beef Tenderloin,Pelawan Mushroom Sauce,Lobi Lobi Glaze, Mashed Potato",
-    price: 780000,
-    imgUrl:
-      "https://i0.wp.com/yummylummy.com/wp-content/uploads/2018/12/Gary_Lum_Australian-Wagyu-beef-013.jpg?fit=2048%2C1638&ssl=1",
-  },
-  {
-    id: 5,
-    RestaurantId: 1,
-    name: "BUMBU RUJAK BARBECUED GAROUPER",
-    description: "Sustainbly Farmed Garouper Fillet",
-    price: 280000,
-    imgUrl:
-      "https://img-global.cpcdn.com/recipes/e37993496d46f45c/680x482cq70/sosis-bumbu-rujak-foto-resep-utama.jpg",
-  },
-];
-
-const onChange = (number, type) => {
-  console.log(number, type); // 1, + or -
-};
-
-const renderProfileItem = ({ item }) => (
-  <View className="container w-full bg-white h-52 flex-row rounded-xl justify-start mb-4 shadow-2xl">
-    <Image
-      source={{ uri: item.imgUrl }}
-      style={{ width: "40%", height: "100%" }}
-      className="rounded-l-xl"
-    />
-    <View className="pl-5 py-2 flex flex-col justify-between w-3/5 pr-2">
-      <View className="gap-1">
-        <Text className="text-lg w-full font-semibold ">{item.name}</Text>
-        <Text className="text-sm w-full text-gray-600">{item.description}</Text>
-      </View>
-      <Text className="text-sm">{formatCurrency(item.price)}</Text>
-      <View className="flex flex-row justify-end">
-        <Counter
-          start={0}
-          onChange={onChange}
-          buttonStyle={{
-            borderColor: "#333",
-            borderWidth: 2,
-            borderRadius: 25,
-          }}
-          buttonTextStyle={{
-            color: "#333",
-          }}
-          countTextStyle={{
-            color: "#333",
-          }}
-        />
-      </View>
-    </View>
-  </View>
-);
-
 const ItemScreen = ({ navigation, route }) => {
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const [openDate, setOpenDate] = useState(false);
   const [openTime, setOpenTime] = useState(false);
+  const [reservationDate, setReservationDate] = useState(new Date());
+  const [items, setItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(50000);
 
-  const onDismissDate = useCallback(() => {
-    setOpenDate(false);
-  }, [setOpenDate]);
+  const { restaurantId } = route.params;
+  const [restaurant, setRestaurant] = useState({});
 
-  const onConfirmDate = useCallback(
-    (params) => {
-      setOpenDate(false);
-      setDate(params.date);
-    },
-    [setOpenDate, setDate]
+  const onChange = (number, type, itemId, price) => {
+    setItems((prevItems) => {
+      let updatedItems;
+      if (number === 0) {
+        // If the quantity becomes zero, filter out the item from the items array
+        updatedItems = prevItems.filter((item) => item.ItemId !== itemId);
+      } else {
+        // Otherwise, update the quantity and subtotal of the item
+        const existingItemIndex = prevItems.findIndex((item) => item.ItemId === itemId);
+        if (existingItemIndex >= 0) {
+          updatedItems = [...prevItems];
+          updatedItems[existingItemIndex] = {
+            ...updatedItems[existingItemIndex],
+            qty: number,
+            subTotal: number * price,
+          };
+        } else {
+          updatedItems = [...prevItems, { ItemId: itemId, qty: number, subTotal: number * price }];
+        }
+      }
+      setTotalPrice(updatedItems.reduce((sum, item) => sum + item.subTotal, 50000));
+      return updatedItems;
+    });
+  };
+
+  console.log(items);
+  const renderProfileItem = ({ item }) => (
+    <View className="container w-full bg-white h-52 flex-row rounded-xl justify-start mb-4 shadow-2xl">
+      <Image source={{ uri: item.imgUrl }} style={{ width: "40%", height: "100%" }} className="rounded-l-xl" />
+      <View className="pl-5 py-2 flex flex-col justify-between w-3/5 pr-2">
+        <View className="gap-1">
+          <Text className="text-lg w-full font-semibold ">{item.name}</Text>
+          <Text className="text-sm w-full text-gray-600">{item.description}</Text>
+        </View>
+        <Text className="text-sm">{formatCurrency(item.price)}</Text>
+        <View className="flex flex-row justify-end">
+          <Counter
+            start={0}
+            onChange={(number, type) => onChange(number, type, item.id, item.price)}
+            buttonStyle={{
+              borderColor: "#333",
+              borderWidth: 2,
+              borderRadius: 25,
+            }}
+            buttonTextStyle={{
+              color: "#333",
+            }}
+            countTextStyle={{
+              color: "#333",
+            }}
+          />
+        </View>
+      </View>
+    </View>
   );
 
   const onDismissTime = useCallback(() => {
@@ -128,44 +85,71 @@ const ItemScreen = ({ navigation, route }) => {
   const onConfirmTime = useCallback(
     ({ hours, minutes }) => {
       setOpenTime(false);
-      setTime(`${hours}:${minutes}`);
+      const date = new Date();
+      const newTime = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+      setTime(newTime);
+      setReservationDate(updateDateWithNewTime(date, newTime));
     },
     [setOpenTime, setTime]
   );
-  const ListFooter = () => (
-    <View className="container min-w-full bg-white h-full flex-col  rounded-xl justify-start shadow-black shadow-2xl p-3 mb-20 gap-y-1">
-      <Text className="text-sm font-medium">Pick Appointment Time</Text>
-      <Button onPress={() => setOpenDate(true)}>Pick Date</Button>
-      <Button onPress={() => setOpenTime(true)}>Pick Time</Button>
-      {date && <Text>Selected Date: {date.toDateString()}</Text>}
-      {time && <Text>Selected Time: {time}</Text>}
-    </View>
-  );
-
-  const { restaurantId } = route.params;
-  const [restaurant, setRestaurant] = useState({});
 
   const getRestaurantbyId = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.EXPO_PUBLIC_BASE_URL}` + `/restaurants/${restaurantId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${await SecureStore.getItemAsync(
-              "access_token"
-            )}`,
-          },
-        }
-      );
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_BASE_URL}` + `/restaurants/${restaurantId}`, {
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`,
+        },
+      });
       setRestaurant(response.data[0]);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const postReservation = async () => {
+    const body = {
+      reservationDate: reservationDate,
+      totalPrice,
+      RestaurantId: restaurantId,
+      items: items.map((item) => ({ ItemId: item.ItemId, qty: item.qty, subTotal: item.subTotal })),
+    };
+
+    try {
+      const response = await axios.post(`${process.env.EXPO_PUBLIC_BASE_URL}/transaction`, body, {
+        headers: {
+          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`,
+        },
+      });
+      console.log("Reservation successful:", response.data.redirect_url);
+      navigation.navigate("Midtrans", {
+        url: response.data.redirect_url,
+      });
+      // Navigate to confirmation screen or handle success
+    } catch (error) {
+      console.log("Error making reservation:", error);
+    }
+  };
+
   useEffect(() => {
     getRestaurantbyId();
   }, []);
+
+  const ListFooter = () => (
+    <View className="container min-w-full bg-white h-full flex-col  rounded-xl justify-start shadow-black shadow-2xl p-3 mb-10 gap-y-3">
+      <Text className="text-sm font-medium">Pick Appointment Time</Text>
+      <Button onPress={() => setOpenTime(true)} className="w-32 bg-[#78c4a4]">
+        Pick Time
+      </Button>
+      {time && <Text>Selected Time: {time}</Text>}
+      <Text className="text-sm font-medium">Subtotal</Text>
+      <Text>Total: {formatCurrency(totalPrice)}</Text>
+      <View className="w-full flex flex-row justify-center align-center text-center">
+        <Pressable onPress={postReservation}>
+          <Text className="text-center bg-[#78c4a4] text-xl rounded-full py-3 min-w-full font-semibold">Confirm</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
 
   return (
     <SafeAreaProvider>
@@ -181,14 +165,6 @@ const ItemScreen = ({ navigation, route }) => {
             alignItems: "center",
           }}
           ListFooterComponent={<ListFooter />}
-        />
-        <DatePickerModal
-          locale="en"
-          mode="single"
-          visible={openDate}
-          onDismiss={onDismissDate}
-          date={date}
-          onConfirm={onConfirmDate}
         />
         <TimePickerModal
           visible={openTime}
@@ -207,7 +183,6 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "#78c4a4",
   },
 });
 
