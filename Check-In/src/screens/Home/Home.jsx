@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Text, View, Image, TextInput, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  FlatList,
+  Pressable,
+} from "react-native";
 import { Fontisto } from "@expo/vector-icons";
 import { FontAwesome6, SimpleLineIcons } from "@expo/vector-icons";
 import axios from "axios";
@@ -54,29 +61,7 @@ const Test = [
   },
 ];
 
-const renderProfileItem = ({ item }) => (
-  <View className="w-full  h-44 flex-row rounded-xl my-2">
-    <Image
-      source={{ uri: item.imgUrl }}
-      style={{ width: "40%", height: "100%" }}
-      className="rounded-l-xl"
-    />
-    <View className="p-5 w-3/5 bg-white rounded-r-xl">
-      <Text className="text-lg w-full">{item.name}</Text>
-      <Text className="pt-2 text-sm">{item.location}</Text>
-      <View className="flex-row justify-end pt-8">
-        <View className="bg-green-300 w-14 aspect-square rounded-full mr-2 flex items-center justify-center">
-          <FontAwesome6 name="heart" size={24} color="white" />
-        </View>
-        <View className="bg-green-600 w-14 aspect-square rounded-full flex items-center justify-center">
-          <SimpleLineIcons name="notebook" size={24} color="white" />
-        </View>
-      </View>
-    </View>
-  </View>
-);
-
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [restaurants, setRestaurants] = useState([]);
 
@@ -101,6 +86,39 @@ const HomeScreen = () => {
   useEffect(() => {
     getRestaurants();
   }, []);
+
+  const renderProfileItem = ({ item }) => {
+    return (
+      <View className="w-full  h-44 flex-row rounded-xl my-2">
+        <Image
+          source={{ uri: item.imgUrl }}
+          style={{ width: "40%", height: "100%" }}
+          className="rounded-l-xl"
+        />
+        <View className="p-5 w-3/5 bg-white rounded-r-xl justify-between">
+          <View>
+            <Text className="text-lg w-full">{item.name}</Text>
+            <Text className="pt-2 text-sm">{item.address}</Text>
+          </View>
+          <View className="flex-row justify-end">
+            <View className="bg-green-300 w-14 aspect-square rounded-full mr-2 flex items-center justify-center">
+              <FontAwesome6 name="heart" size={24} color="white" />
+            </View>
+            <Pressable
+              className="bg-green-600 w-14 aspect-square rounded-full flex items-center justify-center"
+              onPress={() => {
+                navigation.navigate("RestaurantDetails", {
+                  restaurantId: item.id,
+                });
+              }}
+            >
+              <SimpleLineIcons name="notebook" size={24} color="white" />
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <View className="flex-col items-center py-7 px-5 w-full">

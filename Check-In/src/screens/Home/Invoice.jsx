@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Text, View, Image, FlatList, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  FlatList,
+  ScrollView,
+  Pressable,
+} from "react-native";
 import {
   formatCurrency,
   formatDate,
@@ -38,40 +45,7 @@ const dummy = [
 </View> */
 }
 
-const renderInvoiceCard = ({ item }) => (
-  <ScrollView className="p-5">
-    <View>
-      <Text className="text-center font-bold text-xl">
-        Check Invoice Histories
-      </Text>
-    </View>
-    <View className="bg-white w-full h-44 flex-row rounded-xl mt-4 justify-center shadow-2xl">
-      <View className="w-2/5 h-full">
-        <Image
-          source={{ uri: item.Restaurant.imgUrl }}
-          style={{ width: "full", height: "100%" }}
-          className="rounded-l-xl"
-        />
-      </View>
-      <View className="px-5 py-2 w-3/5 border-l-2 border-gray-100">
-        <Text className="text-lg font-semibold">{item.Restaurant.name}</Text>
-        <Text className="pt-2 text-sm">{item.Restaurant.location}</Text>
-        <Text className="pt-2 text-sm">Reservation Date: </Text>
-        <Text className="pt-0.5 text-sm">
-          {formatDate(item.reservationDate)}
-        </Text>
-        <Text className="pt-0.5 text-sm">
-          {formatTime(item.reservationDate)}
-        </Text>
-        <Text className="pt-2 text-sm">
-          Total Price : {formatCurrency(item.totalPrice)}
-        </Text>
-      </View>
-    </View>
-  </ScrollView>
-);
-
-const InvoiceScreen = () => {
+const InvoiceScreen = ({ navigation }) => {
   const [invoices, setInvoices] = useState([]);
 
   const getInvoices = async () => {
@@ -96,14 +70,53 @@ const InvoiceScreen = () => {
     getInvoices();
   }, []);
 
+  const renderInvoiceCard = ({ item }) => (
+    <Pressable
+      className="bg-white w-full h-44 flex-row rounded-xl mt-4 justify-center shadow-2xl"
+      onPress={() => {
+        navigation.navigate("InvoiceDetails", {
+          invoiceId: item.id,
+        });
+      }}
+    >
+      <View className="w-2/5 h-full">
+        <Image
+          source={{ uri: item.Restaurant.imgUrl }}
+          style={{ width: "full", height: "100%" }}
+          className="rounded-l-xl"
+        />
+      </View>
+      <View className="px-5 py-2 w-3/5 border-l-2 border-gray-100">
+        <Text className="text-lg font-semibold">{item.Restaurant.name}</Text>
+        <Text className="pt-2 text-sm">{item.Restaurant.location}</Text>
+        <Text className="pt-2 text-sm">Reservation Date: </Text>
+        <Text className="pt-0.5 text-sm">
+          {formatDate(item.reservationDate)}
+        </Text>
+        <Text className="pt-0.5 text-sm">
+          {formatTime(item.reservationDate)}
+        </Text>
+        <Text className="pt-2 text-sm">
+          Total Price : {formatCurrency(item.totalPrice)}
+        </Text>
+      </View>
+    </Pressable>
+  );
+
   return (
     <View className=" flex flex-col items-center w-full h-full">
+      <View>
+        <Text className="text-center font-bold text-xl pt-5">
+          Check Invoice Histories
+        </Text>
+      </View>
+
       {invoices[0] ? (
         <FlatList
           data={invoices}
           renderItem={renderInvoiceCard}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={{ paddingBottom: 260 }}
+          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 260 }}
         />
       ) : (
         <View className="flex items-center justify-center h-full">

@@ -57,6 +57,11 @@ export default function RegisterScreen({ navigation }) {
         `Thankyou for registering ${name}! Your registered email is ${email}`
       );
 
+      setName("");
+      setEmail("");
+      setPassword("");
+      setPhoneNumber("");
+
       navigation.navigate("Login");
     } catch (error) {
       console.log(error);

@@ -42,6 +42,8 @@ export default function LoginScreen({ navigation }) {
         response.data.access_token
       );
       await SecureStore.setItemAsync("email", email);
+      setEmail("");
+      setPassword("");
       auth.setIsSignedIn(true);
     } catch (error) {
       console.log(error);

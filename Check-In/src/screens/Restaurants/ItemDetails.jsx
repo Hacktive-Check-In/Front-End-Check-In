@@ -1,10 +1,17 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Text, View, Image, FlatList, StyleSheet } from "react-native";
 import { formatCurrency } from "../../../helpers/helper";
 import Counter from "react-native-counters";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { DatePickerModal, TimePickerModal, en, registerTranslation } from "react-native-paper-dates";
+import {
+  DatePickerModal,
+  TimePickerModal,
+  en,
+  registerTranslation,
+} from "react-native-paper-dates";
 import { Button } from "react-native-paper";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 registerTranslation("en", en);
 
@@ -15,7 +22,8 @@ const Test = [
     name: "MIE GORENG",
     description: "Fried Egg Noodles, Prawn, Beef Ball,Chicken Sate",
     price: 125000,
-    imgUrl: "https://asset.kompas.com/crops/032NyNKaO9X61kL1ZpU9AS4khrU=/52x28:954x629/750x500/data/photo/2020/11/19/5fb641f087a66.jpg",
+    imgUrl:
+      "https://asset.kompas.com/crops/032NyNKaO9X61kL1ZpU9AS4khrU=/52x28:954x629/750x500/data/photo/2020/11/19/5fb641f087a66.jpg",
   },
   {
     id: 2,
@@ -23,23 +31,28 @@ const Test = [
     name: "KING PRAWNS",
     description: "Spicy Sour Keung Sauce, Lingueine,Roasted Cherry Tomatoes",
     price: 398000,
-    imgUrl: "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/prawns-88d2952.jpg",
+    imgUrl:
+      "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/prawns-88d2952.jpg",
   },
   {
     id: 3,
     RestaurantId: 1,
     name: "ASAM PADEH BOWL",
-    description: "Prawns,Scallops,Garouper, Baby Octopus,Tamarind Chili Lime Leaf",
+    description:
+      "Prawns,Scallops,Garouper, Baby Octopus,Tamarind Chili Lime Leaf",
     price: 198000,
-    imgUrl: "https://img-global.cpcdn.com/recipes/0cb7219daddbeeda/680x482cq70/asam-padeh-gajeboh-foto-resep-utama.jpg",
+    imgUrl:
+      "https://img-global.cpcdn.com/recipes/0cb7219daddbeeda/680x482cq70/asam-padeh-gajeboh-foto-resep-utama.jpg",
   },
   {
     id: 4,
     RestaurantId: 1,
     name: "CHARRED AUSTRALIAN WAGYU TENDERLOIN",
-    description: "Beef Tenderloin,Pelawan Mushroom Sauce,Lobi Lobi Glaze, Mashed Potato",
+    description:
+      "Beef Tenderloin,Pelawan Mushroom Sauce,Lobi Lobi Glaze, Mashed Potato",
     price: 780000,
-    imgUrl: "https://i0.wp.com/yummylummy.com/wp-content/uploads/2018/12/Gary_Lum_Australian-Wagyu-beef-013.jpg?fit=2048%2C1638&ssl=1",
+    imgUrl:
+      "https://i0.wp.com/yummylummy.com/wp-content/uploads/2018/12/Gary_Lum_Australian-Wagyu-beef-013.jpg?fit=2048%2C1638&ssl=1",
   },
   {
     id: 5,
@@ -47,7 +60,8 @@ const Test = [
     name: "BUMBU RUJAK BARBECUED GAROUPER",
     description: "Sustainbly Farmed Garouper Fillet",
     price: 280000,
-    imgUrl: "https://img-global.cpcdn.com/recipes/e37993496d46f45c/680x482cq70/sosis-bumbu-rujak-foto-resep-utama.jpg",
+    imgUrl:
+      "https://img-global.cpcdn.com/recipes/e37993496d46f45c/680x482cq70/sosis-bumbu-rujak-foto-resep-utama.jpg",
   },
 ];
 
@@ -57,7 +71,11 @@ const onChange = (number, type) => {
 
 const renderProfileItem = ({ item }) => (
   <View className="container w-full bg-white h-52 flex-row rounded-xl justify-start mb-4 shadow-2xl">
-    <Image source={{ uri: item.imgUrl }} style={{ width: "40%", height: "100%" }} className="rounded-l-xl" />
+    <Image
+      source={{ uri: item.imgUrl }}
+      style={{ width: "40%", height: "100%" }}
+      className="rounded-l-xl"
+    />
     <View className="pl-5 py-2 flex flex-col justify-between w-3/5 pr-2">
       <View className="gap-1">
         <Text className="text-lg w-full font-semibold ">{item.name}</Text>
@@ -85,7 +103,7 @@ const renderProfileItem = ({ item }) => (
   </View>
 );
 
-const ItemScreen = () => {
+const ItemScreen = ({ navigation, route }) => {
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const [openDate, setOpenDate] = useState(false);
@@ -115,7 +133,7 @@ const ItemScreen = () => {
     [setOpenTime, setTime]
   );
   const ListFooter = () => (
-    <View className="container min-w-full bg-white h-52 flex-col  rounded-xl justify-start shadow-black shadow-2xl p-3">
+    <View className="container min-w-full bg-white h-full flex-col  rounded-xl justify-start shadow-black shadow-2xl p-3 mb-20 gap-y-1">
       <Text className="text-sm font-medium">Pick Appointment Time</Text>
       <Button onPress={() => setOpenDate(true)}>Pick Date</Button>
       <Button onPress={() => setOpenTime(true)}>Pick Time</Button>
@@ -124,6 +142,31 @@ const ItemScreen = () => {
     </View>
   );
 
+  const { restaurantId } = route.params;
+  const [restaurant, setRestaurant] = useState({});
+
+  const getRestaurantbyId = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_BASE_URL}` + `/restaurants/${restaurantId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${await SecureStore.getItemAsync(
+              "access_token"
+            )}`,
+          },
+        }
+      );
+      setRestaurant(response.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getRestaurantbyId();
+  }, []);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeContainer} className="px-5 ">
@@ -131,7 +174,7 @@ const ItemScreen = () => {
           <Text className="text-2xl font-semibold">Our Menu Lists</Text>
         </View>
         <FlatList
-          data={Test}
+          data={restaurant.Items}
           renderItem={renderProfileItem}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{
@@ -139,7 +182,14 @@ const ItemScreen = () => {
           }}
           ListFooterComponent={<ListFooter />}
         />
-        <DatePickerModal locale="en" mode="single" visible={openDate} onDismiss={onDismissDate} date={date} onConfirm={onConfirmDate} />
+        <DatePickerModal
+          locale="en"
+          mode="single"
+          visible={openDate}
+          onDismiss={onDismissDate}
+          date={date}
+          onConfirm={onConfirmDate}
+        />
         <TimePickerModal
           visible={openTime}
           onDismiss={onDismissTime}
