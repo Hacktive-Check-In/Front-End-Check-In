@@ -9,7 +9,9 @@ export default function LandingScreen({ navigation }) {
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={`https://i.pinimg.com/736x/62/77/81/627781a8a65c992f5c58afeda235901c.jpg`}
+              source={{
+                uri: "https://res.cloudinary.com/dnvty1n0c/image/upload/v1716111805/check%20in%20logo/3_x9oi3z.png",
+              }}
             />
           </View>
           <View style={styles.middleContainer}>
@@ -53,7 +55,8 @@ const styles = StyleSheet.create({
     height: "45%",
   },
   image: {
-    width: 100,
+    width: 300,
+    height: 300,
   },
   middleContainer: {
     height: "30%",

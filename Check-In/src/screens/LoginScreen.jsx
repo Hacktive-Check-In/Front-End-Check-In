@@ -62,6 +62,14 @@ export default function LoginScreen({ navigation }) {
       <SafeAreaProvider>
         <SafeAreaView style={styles.safeContainer}>
           <View style={styles.topContainer}>
+            <View style={styles.logoContainer}>
+              <Image
+                style={styles.logo}
+                source={{
+                  uri: "https://res.cloudinary.com/dnvty1n0c/image/upload/v1716111805/check%20in%20logo/3_x9oi3z.png",
+                }}
+              />
+            </View>
             <Text style={styles.signInText}>Sign In</Text>
             <Text style={styles.signInDetail}>
               Welcome back! Sign In to continue reservations
@@ -124,13 +132,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#faf7f5",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 80,
+    paddingTop: 40,
   },
   topContainer: {
     height: "25%",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     gap: 3,
+  },
+  logoContainer: {
+    marginVertical: "-10%",
+  },
+  logo: {
+    width: 200,
+    height: 200,
   },
   signInText: {
     fontSize: 42,
@@ -142,7 +157,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
   },
   middleContainer: {
-    height: "25%",
+    height: "33%",
     gap: 15,
     width: "100%",
     paddingHorizontal: 40,
@@ -163,6 +178,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     gap: 20,
     marginTop: "7%",
+    paddingHorizontal: 0,
   },
   signInBtnContainer: {
     backgroundColor: "#78c4a4",

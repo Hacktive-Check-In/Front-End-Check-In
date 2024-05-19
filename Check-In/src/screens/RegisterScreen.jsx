@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   View,
+  Image,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
@@ -83,6 +84,15 @@ export default function RegisterScreen({ navigation }) {
       <SafeAreaProvider>
         <ScrollView style={styles.scrollContainer}>
           <SafeAreaView style={styles.safeContainer}>
+            <View style={styles.logoContainer}>
+              <Image
+                style={styles.logo}
+                source={{
+                  uri: "https://res.cloudinary.com/dnvty1n0c/image/upload/v1716111805/check%20in%20logo/3_x9oi3z.png",
+                }}
+              />
+            </View>
+
             <View style={styles.topContainer}>
               <Text style={styles.createAccountText}>Create an Account</Text>
               <Text style={styles.signUpDetail}>
@@ -173,8 +183,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#faf7f5",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 80,
     minHeight: "100%",
+    marginBottom: "45%",
   },
   scrollContainer: {
     backgroundColor: "#faf7f5",
@@ -184,6 +194,13 @@ const styles = StyleSheet.create({
     height: "15%",
     alignItems: "center",
     gap: 3,
+  },
+  logoContainer: {
+    marginVertical: "-10%",
+  },
+  logo: {
+    width: 200,
+    height: 200,
   },
   createAccountText: {
     fontSize: 32,
