@@ -1,9 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Text, View, Image, FlatList, StyleSheet, Pressable, Alert } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  FlatList,
+  StyleSheet,
+  Pressable,
+  Alert,
+} from "react-native";
 import { formatCurrency, updateDateWithNewTime } from "../../../helpers/helper";
 import Counter from "react-native-counters";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { DatePickerModal, TimePickerModal, en, registerTranslation } from "react-native-paper-dates";
+import {
+  DatePickerModal,
+  TimePickerModal,
+  en,
+  registerTranslation,
+} from "react-native-paper-dates";
 import { Button } from "react-native-paper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
@@ -30,7 +43,9 @@ const ItemScreen = ({ navigation, route }) => {
         updatedItems = prevItems.filter((item) => item.ItemId !== itemId);
       } else {
         // Otherwise, update the quantity and subtotal of the item
-        const existingItemIndex = prevItems.findIndex((item) => item.ItemId === itemId);
+        const existingItemIndex = prevItems.findIndex(
+          (item) => item.ItemId === itemId
+        );
         if (existingItemIndex >= 0) {
           updatedItems = [...prevItems];
           updatedItems[existingItemIndex] = {
@@ -41,28 +56,46 @@ const ItemScreen = ({ navigation, route }) => {
             price: price,
           };
         } else {
-          updatedItems = [...prevItems, { ItemId: itemId, qty: number, subTotal: number * price, name: name, price: price }];
+          updatedItems = [
+            ...prevItems,
+            {
+              ItemId: itemId,
+              qty: number,
+              subTotal: number * price,
+              name: name,
+              price: price,
+            },
+          ];
         }
       }
-      setTotalPrice(updatedItems.reduce((sum, item) => sum + item.subTotal, 50000));
+      setTotalPrice(
+        updatedItems.reduce((sum, item) => sum + item.subTotal, 50000)
+      );
       return updatedItems;
     });
   };
 
-  console.log(items);
   const renderProfileItem = ({ item }) => (
     <View className="container w-full bg-white h-52 flex-row rounded-xl justify-start mb-4 shadow-2xl">
-      <Image source={{ uri: item.imgUrl }} style={{ width: "40%", height: "100%" }} className="rounded-l-xl" />
+      <Image
+        source={{ uri: item.imgUrl }}
+        style={{ width: "40%", height: "100%" }}
+        className="rounded-l-xl"
+      />
       <View className="pl-5 py-2 flex flex-col justify-between w-3/5 pr-2">
         <View className="gap-1">
           <Text className="text-lg w-full font-semibold ">{item.name}</Text>
-          <Text className="text-sm w-full text-gray-600">{item.description}</Text>
+          <Text className="text-sm w-full text-gray-600">
+            {item.description}
+          </Text>
         </View>
         <Text className="text-sm">{formatCurrency(item.price)}</Text>
         <View className="flex flex-row justify-end">
           <Counter
             start={0}
-            onChange={(number, type) => onChange(number, type, item.id, item.price, item.name)}
+            onChange={(number, type) =>
+              onChange(number, type, item.id, item.price, item.name)
+            }
             buttonStyle={{
               borderColor: "#333",
               borderWidth: 2,
@@ -88,7 +121,9 @@ const ItemScreen = ({ navigation, route }) => {
     ({ hours, minutes }) => {
       setOpenTime(false);
       const date = new Date();
-      const newTime = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+      const newTime = `${String(hours).padStart(2, "0")}:${String(
+        minutes
+      ).padStart(2, "0")}`;
       setTime(newTime);
       setReservationDate(updateDateWithNewTime(date, newTime));
     },
@@ -97,11 +132,16 @@ const ItemScreen = ({ navigation, route }) => {
 
   const getRestaurantbyId = async () => {
     try {
-      const response = await axios.get(`${process.env.EXPO_PUBLIC_BASE_URL}` + `/restaurants/${restaurantId}`, {
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`,
-        },
-      });
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_BASE_URL}` + `/restaurants/${restaurantId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${await SecureStore.getItemAsync(
+              "access_token"
+            )}`,
+          },
+        }
+      );
       setRestaurant(response.data[0]);
     } catch (error) {
       console.log(error);
@@ -110,22 +150,35 @@ const ItemScreen = ({ navigation, route }) => {
 
   const postReservation = async () => {
     if (!time) {
-      Alert.alert("Time Not Selected", "Please pick a time for your reservation.");
+      Alert.alert(
+        "Time Not Selected",
+        "Please pick a time for your reservation."
+      );
       return;
     }
     const body = {
       reservationDate: reservationDate,
       totalPrice,
       RestaurantId: restaurantId,
-      items: items.map((item) => ({ ItemId: item.ItemId, qty: item.qty, subTotal: item.subTotal })),
+      items: items.map((item) => ({
+        ItemId: item.ItemId,
+        qty: item.qty,
+        subTotal: item.subTotal,
+      })),
     };
 
     try {
-      const response = await axios.post(`${process.env.EXPO_PUBLIC_BASE_URL}/transaction`, body, {
-        headers: {
-          Authorization: `Bearer ${await SecureStore.getItemAsync("access_token")}`,
-        },
-      });
+      const response = await axios.post(
+        `${process.env.EXPO_PUBLIC_BASE_URL}/transaction`,
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${await SecureStore.getItemAsync(
+              "access_token"
+            )}`,
+          },
+        }
+      );
       console.log("Reservation successful:", response.data.redirect_url);
       navigation.navigate("Midtrans", {
         url: response.data.redirect_url,
@@ -164,12 +217,18 @@ const ItemScreen = ({ navigation, route }) => {
         )}
       <View className="flex flex-row justify-between items-center">
         <Text className="text-sm font-medium">Total:</Text>
-        {totalPrice && <Text className="text-sm font-medium">{formatCurrency(totalPrice)}</Text>}
+        {totalPrice && (
+          <Text className="text-sm font-medium">
+            {formatCurrency(totalPrice)}
+          </Text>
+        )}
       </View>
 
       <View className="w-full flex flex-row justify-center align-center text-center">
         <Pressable onPress={postReservation}>
-          <Text className="text-center bg-[#78c4a4] text-xl rounded-full py-3 min-w-full font-semibold">Confirm</Text>
+          <Text className="text-center bg-[#78c4a4] text-xl rounded-full py-3 min-w-full font-semibold">
+            Confirm
+          </Text>
         </Pressable>
       </View>
     </View>
