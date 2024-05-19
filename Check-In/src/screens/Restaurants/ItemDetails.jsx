@@ -22,7 +22,7 @@ const ItemScreen = ({ navigation, route }) => {
   const { restaurantId } = route.params;
   const [restaurant, setRestaurant] = useState({});
 
-  const onChange = (number, type, itemId, price) => {
+  const onChange = (number, type, itemId, price, name) => {
     setItems((prevItems) => {
       let updatedItems;
       if (number === 0) {
@@ -37,9 +37,11 @@ const ItemScreen = ({ navigation, route }) => {
             ...updatedItems[existingItemIndex],
             qty: number,
             subTotal: number * price,
+            name: name,
+            price: price,
           };
         } else {
-          updatedItems = [...prevItems, { ItemId: itemId, qty: number, subTotal: number * price }];
+          updatedItems = [...prevItems, { ItemId: itemId, qty: number, subTotal: number * price, name: name, price: price }];
         }
       }
       setTotalPrice(updatedItems.reduce((sum, item) => sum + item.subTotal, 50000));
@@ -60,7 +62,7 @@ const ItemScreen = ({ navigation, route }) => {
         <View className="flex flex-row justify-end">
           <Counter
             start={0}
-            onChange={(number, type) => onChange(number, type, item.id, item.price)}
+            onChange={(number, type) => onChange(number, type, item.id, item.price, item.name)}
             buttonStyle={{
               borderColor: "#333",
               borderWidth: 2,
@@ -135,14 +137,32 @@ const ItemScreen = ({ navigation, route }) => {
   }, []);
 
   const ListFooter = () => (
-    <View className="container min-w-full bg-white h-full flex-col  rounded-xl justify-start shadow-black shadow-2xl p-3 mb-10 gap-y-3">
+    <View className="container min-w-full bg-white h-full flex-col  rounded-xl justify-start shadow-black shadow-2xl px-3 mb-10 gap-y-3">
       <Text className="text-sm font-medium">Pick Appointment Time</Text>
       <Button onPress={() => setOpenTime(true)} className="w-32 bg-[#78c4a4]">
         Pick Time
       </Button>
       {time && <Text>Selected Time: {time}</Text>}
-      <Text className="text-sm font-medium">Subtotal</Text>
-      <Text>Total: {formatCurrency(totalPrice)}</Text>
+      <Text className="text-sm font-medium">Subtotal: </Text>
+      {items &&
+        items.map(
+          (item) => (
+            (key = item.ItemId),
+            (
+              <View className="flex flex-row justify-between items-center">
+                <Text className="w-4/6">
+                  {item.qty} {item.name} x {formatCurrency(item.price)} =
+                </Text>
+                <Text> {formatCurrency(item.subTotal)}</Text>
+              </View>
+            )
+          )
+        )}
+      <View className="flex flex-row justify-between items-center">
+        <Text className="text-sm font-medium">Total:</Text>
+        {totalPrice && <Text className="text-sm font-medium">{formatCurrency(totalPrice)}</Text>}
+      </View>
+
       <View className="w-full flex flex-row justify-center align-center text-center">
         <Pressable onPress={postReservation}>
           <Text className="text-center bg-[#78c4a4] text-xl rounded-full py-3 min-w-full font-semibold">Confirm</Text>
