@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Text, View, Image, FlatList, StyleSheet, Pressable } from "react-native";
+import { Text, View, Image, FlatList, StyleSheet, Pressable, Alert } from "react-native";
 import { formatCurrency, updateDateWithNewTime } from "../../../helpers/helper";
 import Counter from "react-native-counters";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -109,6 +109,10 @@ const ItemScreen = ({ navigation, route }) => {
   };
 
   const postReservation = async () => {
+    if (!time) {
+      Alert.alert("Time Not Selected", "Please pick a time for your reservation.");
+      return;
+    }
     const body = {
       reservationDate: reservationDate,
       totalPrice,
