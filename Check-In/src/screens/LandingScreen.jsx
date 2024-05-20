@@ -10,13 +10,13 @@ export default function LandingScreen({ navigation }) {
             <Image
               style={styles.image}
               source={{
-                uri: "https://res.cloudinary.com/dnvty1n0c/image/upload/v1716111805/check%20in%20logo/3_x9oi3z.png",
+                uri: "https://res.cloudinary.com/dghilbqdk/image/upload/v1716175982/sample%20c2p3/mtij4352s6tgdzulwjzr.png",
               }}
             />
           </View>
           <View style={styles.middleContainer}>
             <Text style={styles.mainText}>
-              The best food, delivered right to your home.
+              The best food choices, right on your fingertips.
             </Text>
           </View>
           <View style={styles.bottomContainer}>
@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
     height: "45%",
   },
   image: {
-    width: 300,
-    height: 300,
+    width: 500,
+    height: 370,
   },
   middleContainer: {
     height: "30%",

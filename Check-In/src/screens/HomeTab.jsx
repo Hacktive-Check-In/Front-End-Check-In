@@ -38,7 +38,7 @@ function HomeTabs() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Favorite"
         component={FavoriteScreen}
         options={{
@@ -50,7 +50,7 @@ function HomeTabs() {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Invoice List"
         component={InvoiceScreen}

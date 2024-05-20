@@ -3,11 +3,18 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const InvoiceResponse = ({ navigation, route }) => {
   return (
     <View className="flex flex-col items-center justify-center h-full space-y-8">
-      <Image source={require("../../../public/success.png")} className="w-52 h-52" />
+      <Image
+        source={require("../../../public/success.png")}
+        className="w-52 h-52"
+      />
       <Text className="text-3xl font-bold">Order Succesfully</Text>
       <View className="flex flex-col items-center justify-center space-y-1">
-        <Text className="text-lg text-gray-500">Your order has been booked.</Text>
-        <Text className="text-lg  text-gray-500">Thanks for being our valid customer</Text>
+        <Text className="text-lg text-gray-500">
+          Your order has been booked.
+        </Text>
+        <Text className="text-lg  text-gray-500">
+          Thanks for being our valid customer
+        </Text>
       </View>
       <Pressable
         onPress={() => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -14,6 +14,7 @@ import {
 } from "../../../helpers/helper";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
+import { useFocusEffect } from "@react-navigation/native";
 
 const dummy = [
   {
@@ -37,13 +38,12 @@ const dummy = [
 ];
 
 // Ini file untuk conditional kalau tidak ada items
-{
-  /* <View className="flex align-middle items-center justify-center">
+
+/* <View className="flex align-middle items-center justify-center">
 <Text className="text-center font-bold text-2xl">
   Consider Buying Something?
 </Text>
 </View> */
-}
 
 const InvoiceScreen = ({ navigation }) => {
   const [invoices, setInvoices] = useState([]);
@@ -61,18 +61,21 @@ const InvoiceScreen = ({ navigation }) => {
         }
       );
       setInvoices(response.data);
+      console.log(invoices);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    getInvoices();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getInvoices();
+    }, [])
+  );
 
   const renderInvoiceCard = ({ item }) => (
     <Pressable
-      className="bg-white w-full h-44 flex-row rounded-xl mt-4 justify-center shadow-2xl"
+      className="bg-white w-full max-h-48 flex-row rounded-xl mt-4 justify-center shadow-2xl "
       onPress={() => {
         navigation.navigate("InvoiceDetails", {
           invoiceId: item.id,
@@ -86,19 +89,23 @@ const InvoiceScreen = ({ navigation }) => {
           className="rounded-l-xl"
         />
       </View>
-      <View className="px-5 py-2 w-3/5 border-l-2 border-gray-100">
-        <Text className="text-lg font-semibold">{item.Restaurant.name}</Text>
-        <Text className="pt-2 text-sm">{item.Restaurant.location}</Text>
-        <Text className="pt-2 text-sm">Reservation Date: </Text>
-        <Text className="pt-0.5 text-sm">
-          {formatDate(item.reservationDate)}
-        </Text>
-        <Text className="pt-0.5 text-sm">
-          {formatTime(item.reservationDate)}
-        </Text>
-        <Text className="pt-2 text-sm">
-          Total Price : {formatCurrency(item.totalPrice)}
-        </Text>
+      <View className="px-5 pt-3 w-3/5 border-l-2 border-gray-100 flex justify-center gap-y-2">
+        <View>
+          <Text className="text-lg font-semibold ">{item.Restaurant.name}</Text>
+        </View>
+        <View className="pb-3 ">
+          <Text className=" text-sm">{item.Restaurant.address}</Text>
+          <Text className=" text-sm">Reservation Date: </Text>
+          <Text className="pt-0.5 text-sm">
+            {formatDate(item.reservationDate)}
+          </Text>
+          <Text className="pt-0.5 text-sm">
+            {formatTime(item.reservationDate)}
+          </Text>
+          <Text className="pt-2 text-sm">
+            Total Price : {formatCurrency(item.totalPrice)}
+          </Text>
+        </View>
       </View>
     </Pressable>
   );
